@@ -13,7 +13,7 @@ Redirect Visitors Based on their Geolocation Country!
 
 ## Description
 
-Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2024-09-14).
+Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-02-09).
 
 ### Features:
 
