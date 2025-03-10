@@ -3,8 +3,9 @@
 **Contributors:** sajjad67 \
 **Tags:** redirect, redirect visitor, redirect by country, wpml redirect \
 **Requires at least:** 5.6 \
-**Tested up to:** 6.6 \
-**Stable tag:** 1.0.7 \
+**Tested up to:** 6.7 \
+**Stable tag:** 2.0.0 \
+**Requires PHP:** 8.0
 **License:** GPLv2 \
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,7 +59,7 @@ If successful, click Activate Plugin to activate it, or Return to Plugin Install
 
 ### How to use this plugin?
 
-Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced GeoIP Redirect & There Adjust Your Setttings As Well As Add Your Redirect Rules. For Regex See <a href="https://sajjadhsagor.com/geoip-redirect-plugin-documentation/">Documentation Here</a>
+Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced GeoIP Redirect & There Adjust Your Setttings As Well As Add Your Redirect Rules. For Regex See Screenshots Examples.</a>
 
 ## Screenshots
 
@@ -76,6 +77,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 
 ## Changelog
+
+### 2.0.0
+- Geo Location Db updated to the last version. Compatibility check for wp v6.7!
 
 ### 1.0.7
 - Plugin crash fix for old PHP version. It will work now for php starting 7.2
