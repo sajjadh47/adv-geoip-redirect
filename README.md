@@ -75,7 +75,6 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ![Import & Export Section](https://ps.w.org/adv-geoip-redirect/assets/screenshot-3.png)
 
-
 ## Changelog
 
 ### 2.0.0
@@ -101,13 +100,12 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 - Geo Location Db updated to the last version. Compatibility check for wp v6.0!
 
 ### 1.0.2
-
 - Geo Location Db updated to the last version. Compatibility check for wp v6.0!
+
 ### 1.0.1
-
 - Infinite Redirecting To the Same page issue is resolved
-### 1.0.0
 
+### 1.0.0
 - Initial release.
 
 ## Upgrade Notice
