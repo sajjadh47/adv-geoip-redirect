@@ -1,7 +1,7 @@
 # Advanced GeoIP Redirect
 
-**Contributors:** sajjad67 \
 **Tags:** redirect, redirect visitor, redirect by country, wpml redirect \
+**Contributors:** sajjad67 \
 **Requires at least:** 5.6 \
 **Tested up to:** 6.7 \
 **Stable tag:** 2.0.0 \
