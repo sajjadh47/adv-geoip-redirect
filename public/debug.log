@@ -1,0 +1,14 @@
+array (
+  0 => 
+  array (
+    'countryField' => 
+    array (
+      0 => 'BD',
+    ),
+    'TargetURLField' => 'https://testingmyplugins.local/test',
+    'VisitedURLField' => 'https://testingmyplugins.local',
+    'FromChkCondition' => 'from',
+    'PassParameter' => 'true',
+    'IgnoreParameter' => 'true',
+  ),
+)

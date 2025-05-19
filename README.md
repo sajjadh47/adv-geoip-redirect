@@ -1,19 +1,14 @@
 # Advanced GeoIP Redirect
 
 **Tags:** redirect, redirect visitor, redirect by country, wpml redirect \
-**Contributors:** sajjad67 \
-**Requires at least:** 5.6 \
-**Tested up to:** 6.7 \
-**Stable tag:** 2.0.0 \
-**Requires PHP:** 8.0 \
-**License:** GPLv2 \
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
+**Tested up to:** 6.8 \
+**Requires PHP:** 8.1
 
 Redirect Visitors Based on their Geolocation Country!
 
 ## Description
 
-Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-02-09).
+Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-20).
 
 ### Features:
 
@@ -33,9 +28,6 @@ Redirect your visitors according to their geographical (country) location. Using
 - Reset Plugin Settings
 - Import & Export Plugin Settings To Use Different on Site
 
-**Interested in contributing to Advanced GeoIP Redirect?**
-Contact me at sagorh672(at)gmail(dot)com
-
 ## Installation
 
 To add a WordPress Plugin using the built-in plugin installer:
@@ -48,8 +40,8 @@ Go to Plugins > Add New.
 4. The resulting installation screen will list the installation as successful or note any problems during the install.
 If successful, click Activate Plugin to activate it, or Return to Plugin Installer for further actions.
 
-To add a WordPress Plugin from github repo / plugin zip file :
-1. Go to wordpress plugin page
+To add a WordPress Plugin from GitHub repo / plugin zip file :
+1. Go to WordPress plugin page
 2. Click Add New & Upload Plugin
 3. Drag / Click upload the plugin zip file
 4. The resulting installation screen will list the installation as successful or note any problems during the install.
@@ -76,6 +68,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 ![Import & Export Section](https://ps.w.org/adv-geoip-redirect/assets/screenshot-3.png)
 
 ## Changelog
+
+### 2.0.1
+- Checked for latest wp version 6.8
 
 ### 2.0.0
 - Geo Location Db updated to the last version. Compatibility check for wp v6.7!

@@ -2,17 +2,17 @@
 Tags: redirect, redirect visitor, redirect by country, wpml redirect
 Contributors: sajjad67
 Author: Sajjad Hossain Sagor
-Tested up to: 6.7
+Tested up to: 6.8
 Requires at least: 5.6
-Stable tag: 2.0.0
-Requires PHP: 8.0
+Stable tag: 2.0.1
+Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Redirect Visitors Based on their Geolocation Country!
 
 == Description ==
-Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-03-09).
+Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-20).
 
 = Features: =
 - Redirect Visitors Based on Visitor Country
@@ -31,9 +31,6 @@ Redirect your visitors according to their geographical (country) location. Using
 - Redirect IF or NOT IF FROM Country Logic
 - Reset Plugin Settings
 - Import & Export Plugin Settings To Use Different on Site
-
-**Interested in contributing to Advanced GeoIP Redirect?**
-Contact me at sagorh672(at)gmail(dot)com
 
 == Installation ==
 To add a WordPress Plugin using the built-in plugin installer:
@@ -63,6 +60,8 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 3. Import & Export Section
 
 == Changelog ==
+= 2.0.1 =
+- Checked for latest wp version 6.8
 = 2.0.0 =
 - Geo Location Db updated to the last version. Compatibility check for wp v6.7!
 = 1.0.8 =

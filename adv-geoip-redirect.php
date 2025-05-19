@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -8,14 +7,15 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @since             2.0.0
  * @package           Adv_Geoip_Redirect
+ * @author            Sajjad Hossain Sagor <sagorh672@gmail.com>
  *
  * Plugin Name:       Advanced GeoIP Redirect
  * Plugin URI:        https://wordpress.org/plugins/adv-geoip-redirect/
- * Description:       Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-03-09).
- * Version:           2.0.0
- * Requires PHP:      8.0
+ * Description:       Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-20).
+ * Version:           2.0.1
+ * Requires at least: 6.5
+ * Requires PHP:      8.1
  * Author:            Sajjad Hossain Sagor
  * Author URI:        https://sajjadhsagor.com/
  * License:           GPL-2.0+
@@ -25,12 +25,14 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) die;
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 /**
  * Currently plugin version.
  */
-define( 'ADV_GEOIP_REDIRECT_VERSION', '2.0.0' );
+define( 'ADV_GEOIP_REDIRECT_PLUGIN_VERSION', '2.0.1' );
 
 /**
  * Define Plugin Folders Path
@@ -43,41 +45,39 @@ define( 'ADV_GEOIP_REDIRECT_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-plugin-activator.php
- * 
+ * This action is documented in includes/class-adv-geoip-redirect-activator.php
+ *
  * @since    2.0.0
  */
-function activate_adv_geoip_redirect()
-{
-	require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-plugin-activator.php';
-	
-	Adv_Geoip_Redirect_Activator::activate();
+function on_activate_adv_geoip_redirect() {
+	require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-adv-geoip-redirect-activator.php';
+
+	Adv_Geoip_Redirect_Activator::on_activate();
 }
 
-register_activation_hook( __FILE__, 'activate_adv_geoip_redirect' );
+register_activation_hook( __FILE__, 'on_activate_adv_geoip_redirect' );
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-plugin-deactivator.php
- * 
+ * This action is documented in includes/class-adv-geoip-redirect-deactivator.php
+ *
  * @since    2.0.0
  */
-function deactivate_adv_geoip_redirect()
-{
-	require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-plugin-deactivator.php';
-	
-	Adv_Geoip_Redirect_Deactivator::deactivate();
+function on_deactivate_adv_geoip_redirect() {
+	require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-adv-geoip-redirect-deactivator.php';
+
+	Adv_Geoip_Redirect_Deactivator::on_deactivate();
 }
 
-register_deactivation_hook( __FILE__, 'deactivate_adv_geoip_redirect' );
+register_deactivation_hook( __FILE__, 'on_deactivate_adv_geoip_redirect' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
- * 
+ *
  * @since    2.0.0
  */
-require ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-plugin.php';
+require ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-adv-geoip-redirect.php';
 
 /**
  * Begins execution of the plugin.
@@ -88,10 +88,9 @@ require ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-plugin.php';
  *
  * @since    2.0.0
  */
-function run_adv_geoip_redirect()
-{
+function run_adv_geoip_redirect() {
 	$plugin = new Adv_Geoip_Redirect();
-	
+
 	$plugin->run();
 }
 

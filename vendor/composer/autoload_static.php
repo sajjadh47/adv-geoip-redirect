@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf3faaeb99fa42083a584a66b046ae2c6
+class ComposerStaticInitAdv_Geoip_Redirect
 {
     public static $prefixLengthsPsr4 = array (
         'M' => 
@@ -53,9 +53,9 @@ class ComposerStaticInitf3faaeb99fa42083a584a66b046ae2c6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf3faaeb99fa42083a584a66b046ae2c6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf3faaeb99fa42083a584a66b046ae2c6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf3faaeb99fa42083a584a66b046ae2c6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitAdv_Geoip_Redirect::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitAdv_Geoip_Redirect::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitAdv_Geoip_Redirect::$classMap;
 
         }, null, ClassLoader::class);
     }

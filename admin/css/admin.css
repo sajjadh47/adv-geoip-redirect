@@ -1,4 +1,4 @@
-@charset "UTF-8";/*!
+/*!
  * Bootstrap  v5.3.3 (https://getbootstrap.com/)
  * Copyright 2011-2024 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
@@ -140,4 +140,21 @@ div#geoipr_settings_fields .row {
 
 div#geoipr_rules_group .dropdown {
 	position: initial;
+}
+
+div#geoipr_rules_group span.input-group-text {
+	border-radius: 0;
+	min-height: 40px;
+}
+
+div#geoipr_rules_group .form-control,
+div#geoipr_rules_group .select2-container--default .select2-selection--multiple {
+	border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+div#geoipr_rules_group button.btn.dropdown-toggle {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border: var(--bs-border-width) solid var(--bs-border-color);
+	min-height: 40px;
 }

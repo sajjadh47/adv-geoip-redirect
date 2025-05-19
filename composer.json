@@ -1,5 +1,8 @@
 {
 	"require": {
-		"geoip2/geoip2": "^2.13"
+		"geoip2/geoip2": "^3.2.0"
+	},
+	"config": {
+		"autoloader-suffix": "Adv_Geoip_Redirect"
 	}
 }
