@@ -4,10 +4,10 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @since      2.0.0
- * @package    Adv_Geoip_Redirect
- * @subpackage Adv_Geoip_Redirect/admin/views
- * @author     Sajjad Hossain Sagor <sagorh672@gmail.com>
+ * @since         2.0.0
+ * @package       Adv_Geoip_Redirect
+ * @subpackage    Adv_Geoip_Redirect/admin/views
+ * @author        Sajjad Hossain Sagor <sagorh672@gmail.com>
  */
 
 // If this file is called directly, abort.

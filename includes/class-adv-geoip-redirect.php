@@ -595,8 +595,7 @@ class Adv_Geoip_Redirect {
 			return $ipaddress;
 		}
 
-		// return $ipaddress;
-		return '103.204.86.9';
+		return $ipaddress;
 	}
 
 	/**
