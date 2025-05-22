@@ -12,8 +12,8 @@
  *
  * Plugin Name:       Advanced GeoIP Redirect
  * Plugin URI:        https://wordpress.org/plugins/adv-geoip-redirect/
- * Description:       Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-20).
- * Version:           2.0.1
+ * Description:       Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-22).
+ * Version:           2.0.2
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Sajjad Hossain Sagor
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'ADV_GEOIP_REDIRECT_PLUGIN_VERSION', '2.0.1' );
+define( 'ADV_GEOIP_REDIRECT_PLUGIN_VERSION', '2.0.2' );
 
 /**
  * Define Plugin Folders Path
