@@ -69,6 +69,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.0.2
+- Fixed a small bug when getting user ip address
+
 ### 2.0.1
 - Checked for latest wp version 6.8
 
