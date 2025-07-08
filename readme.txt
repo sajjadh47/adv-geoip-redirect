@@ -4,7 +4,7 @@ Contributors: sajjad67
 Author: Sajjad Hossain Sagor
 Tested up to: 6.8
 Requires at least: 5.6
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Redirect Visitors Based on their Geolocation Country!
 
 == Description ==
-Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-05-20).
+Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-08-07).
 
 = Features: =
 - Redirect Visitors Based on Visitor Country
@@ -60,6 +60,8 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 3. Import & Export Section
 
 == Changelog ==
+= 2.0.3 =
+- Geo Location Db updated to the last version. And Added a new column in the backend where you can see your IP information now
 = 2.0.2 =
 - Fixed a small bug when getting user ip address
 = 2.0.1 =

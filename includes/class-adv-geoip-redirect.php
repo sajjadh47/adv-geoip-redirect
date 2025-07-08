@@ -11,8 +11,7 @@
 /**
  * The core plugin class.
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing hooks.
+ * This is used to define admin-specific hooks and public-facing hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
@@ -113,7 +112,7 @@ class Adv_Geoip_Redirect {
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * Load the dependencies, set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
 	 * @since     2.0.0
@@ -126,7 +125,6 @@ class Adv_Geoip_Redirect {
 		self::$default_settings = array_combine( self::$option_fields, self::$default_option_values );
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -137,7 +135,6 @@ class Adv_Geoip_Redirect {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Adv_Geoip_Redirect_Loader. Orchestrates the hooks of the plugin.
-	 * - Adv_Geoip_Redirect_i18n.   Defines internationalization functionality.
 	 * - Adv_Geoip_Redirect_Admin.  Defines all hooks for the admin area.
 	 * - Adv_Geoip_Redirect_Public. Defines all hooks for the public side of the site.
 	 *
@@ -153,12 +150,6 @@ class Adv_Geoip_Redirect {
 		 * core plugin.
 		 */
 		require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-adv-geoip-redirect-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'includes/class-adv-geoip-redirect-i18n.php';
 
 		/**
 		 * Loads the composer autoload file to include packages.
@@ -177,21 +168,6 @@ class Adv_Geoip_Redirect {
 		require_once ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'public/class-adv-geoip-redirect-public.php';
 
 		$this->loader = new Adv_Geoip_Redirect_Loader();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Adv_Geoip_Redirect_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since     2.0.0
-	 * @access    private
-	 */
-	private function set_locale() {
-		$plugin_i18n = new Adv_Geoip_Redirect_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
@@ -243,8 +219,7 @@ class Adv_Geoip_Redirect {
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
+	 * The name of the plugin used to uniquely identify it within the context of WordPress.
 	 *
 	 * @since     2.0.0
 	 * @access    public

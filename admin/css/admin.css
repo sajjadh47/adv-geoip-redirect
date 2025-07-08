@@ -158,3 +158,7 @@ div#geoipr_rules_group button.btn.dropdown-toggle {
 	border: var(--bs-border-width) solid var(--bs-border-color);
 	min-height: 40px;
 }
+
+.geoipr_ip_info {
+	border-radius: 4px;
+}

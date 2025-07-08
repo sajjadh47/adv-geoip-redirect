@@ -129,7 +129,7 @@ class Adv_Geoip_Redirect_Admin {
 			'manage_options',
 			'adv-geoip-redirect',
 			array( $this, 'menu_page' ),
-			'dashicons-admin-tools'
+			'dashicons-admin-site-alt3'
 		);
 	}
 

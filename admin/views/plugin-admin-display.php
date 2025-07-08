@@ -15,6 +15,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+$visitor_ip = Adv_Geoip_Redirect::get_visitor_ip();
+
+// if result is found then redirect.
+try {
+	// This creates the Reader object.
+	$reader          = new \GeoIp2\Database\Reader( ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'public/geoip-db/GeoLite2-Country.mmdb' );
+	$visitor_geo     = $reader->country( $visitor_ip );
+	$visitor_country = $visitor_geo->country->name;
+} catch ( Exception $e ) {
+	$visitor_country = 'N/A';
+}
+
 ?>
 <div class="wrap">
 	<h2>
@@ -63,10 +75,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</div>
 				</div>
 			</div>
+			<div class="form-group row">
+				<div class="col-sm-3" style="line-height: 35px;">
+					<?php esc_html_e( 'Your IP Information', 'adv-geoip-redirect' ); ?>
+				</div>
+				<div class="col-sm-9">
+					<div class="form-check">
+						<code class="geoipr_ip_info"><?php esc_html_e( 'Address: ', 'adv-geoip-redirect' ); ?><?php echo esc_html( $visitor_ip ); ?></code>
+						<code class="geoipr_ip_info"><?php esc_html_e( 'Country: ', 'adv-geoip-redirect' ); ?><?php echo esc_html( $visitor_country ); ?></code>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- Here Goes Rules Set Markup -->
-		<h3 class="redirect_rules_heading" <?php echo ! empty( Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ) ) ? 'style="display:block;"' : 'style="display:none;"'; ?>>
+		<h3 class="redirect_rules_heading" <?php echo ! empty( Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ) ) ? 'style="display: block;"' : 'style="display: none;"'; ?>>
 			<?php esc_html_e( 'Redirect Rules', 'adv-geoip-redirect' ); ?>
 		</h3>
 		
