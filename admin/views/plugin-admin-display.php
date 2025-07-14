@@ -112,7 +112,7 @@ try {
 		<div class="postbox">
 			<h3><span><?php esc_html_e( 'Export Settings', 'adv-geoip-redirect' ); ?></span></h3>
 			<div class="inside">
-				<p><?php esc_html_e( 'Export the currently saved plugin settings. This allows you to easily import the configuration into another site.', 'administrator' ); ?></p>
+				<p><?php esc_html_e( 'Export the currently saved plugin settings. This allows you to easily import the configuration into another site.', 'adv-geoip-redirect' ); ?></p>
 				<form action="" method="post" id="geoipr_settings_export_form">
 					<p>
 						<?php wp_nonce_field( 'geoipr_settings_export_form', '_wpnonce_geoipr_settings_export_form' ); ?>

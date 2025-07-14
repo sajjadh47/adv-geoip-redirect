@@ -160,7 +160,7 @@ class Adv_Geoip_Redirect_Public {
 				array(
 					gmdate( 'Y-m-d H:i:s' ),
 					'Visitor IP ' . $this->visitor_ip,
-					__( 'Redirection terminated. Invalid Visitor IP Found!' ),
+					__( 'Redirection terminated. Invalid Visitor IP Found!', 'adv-geoip-redirect' ),
 				)
 			);
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
