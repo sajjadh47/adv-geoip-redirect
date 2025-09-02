@@ -93,10 +93,12 @@ class Adv_Geoip_Redirect_Admin {
 				'AdvGeoipRedirect',
 				array(
 					'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-					'btnSavingText'    => __( 'Saving... Please Wait', 'adv-geoip-redirect' ),
-					'confirnDeleteMsg' => __( 'Do You Really Want To Delete This Redirect Rule?', 'adv-geoip-redirect' ),
-					'confirnResetMsg'  => __( 'Do You Really Want To Reset All Redirect Rules? Please Make a backup using the Export Tool below to restore again!', 'adv-geoip-redirect' ),
-					'redirectRules'    => Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ),
+					'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
+					'btnSavingText'            => __( 'Saving... Please Wait', 'adv-geoip-redirect' ),
+					'confirnDeleteMsg'         => __( 'Do You Really Want To Delete This Redirect Rule?', 'adv-geoip-redirect' ),
+					'confirnResetMsg'          => __( 'Do You Really Want To Reset All Redirect Rules? Please Make a backup using the Export Tool below to restore again!', 'adv-geoip-redirect' ),
+					'confirnDebugLogClearMsg'  => __( 'Do You Really Want To Clear The Debug Log?', 'adv-geoip-redirect' ),
+					'redirectRules'            => Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ),
 				)
 			);
 		}
@@ -154,6 +156,38 @@ class Adv_Geoip_Redirect_Admin {
 	 * @access    public
 	 */
 	public function admin_init() {
+		if ( isset( $_POST['geoipr_reset_btn'] ) && '1' === $_POST['geoipr_reset_btn'] ) {
+			if ( ! isset( $_POST['_wpnonce_geoipr_settings_form'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_geoipr_settings_form'] ) ), 'geoipr_settings_form' ) ) {
+				$this->notices = array(
+					'class'   => 'notice notice-warning',
+					'message' => __( 'Sorry, your nonce did not verify.', 'adv-geoip-redirect' ),
+				);
+			} elseif ( current_user_can( 'manage_options' ) ) {
+				Adv_Geoip_Redirect::reset_plugin_settings();
+
+				$this->notices[] = array(
+					'class'   => 'notice notice-success',
+					'message' => __( 'Filters Reset Successfully', 'adv-geoip-redirect' ),
+				);
+			}
+		}
+
+		if ( isset( $_POST['geoipr_debug_log_clear_action'] ) && current_user_can( 'manage_options' ) ) {
+			if ( ! isset( $_POST['_wpnonce_geoipr_settings_debug_log_clear_form'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_geoipr_settings_debug_log_clear_form'] ) ), 'geoipr_settings_debug_log_clear_form' ) ) {
+				$this->notices[] = array(
+					'class'   => 'notice notice-warning',
+					'message' => __( 'Sorry, your nonce did not verify.', 'adv-geoip-redirect' ),
+				);
+			} else {
+				Adv_Geoip_Redirect::clear_debug_log();
+
+				$this->notices[] = array(
+					'class'   => 'notice notice-success',
+					'message' => __( 'Debug log cleared Successfully', 'adv-geoip-redirect' ),
+				);
+			}
+		}
+
 		if ( isset( $_POST['geoipr_export_action'] ) && current_user_can( 'manage_options' ) ) {
 			if ( ! isset( $_POST['_wpnonce_geoipr_settings_export_form'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_geoipr_settings_export_form'] ) ), 'geoipr_settings_export_form' ) ) {
 				$this->notices[] = array(
@@ -219,22 +253,6 @@ class Adv_Geoip_Redirect_Admin {
 						'message' => __( 'Corrupted Import File! Please Try Again!', 'adv-geoip-redirect' ),
 					);
 				}
-			}
-		}
-
-		if ( isset( $_POST['geoipr_reset_btn'] ) && '1' === $_POST['geoipr_reset_btn'] ) {
-			if ( ! isset( $_POST['_wpnonce_geoipr_settings_form'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_geoipr_settings_form'] ) ), 'geoipr_settings_form' ) ) {
-				$this->notices = array(
-					'class'   => 'notice notice-warning',
-					'message' => __( 'Sorry, your nonce did not verify.', 'adv-geoip-redirect' ),
-				);
-			} elseif ( current_user_can( 'manage_options' ) ) {
-				Adv_Geoip_Redirect::reset_plugin_settings();
-
-				$this->notices[] = array(
-					'class'   => 'notice notice-success',
-					'message' => __( 'Filters Reset Successfully', 'adv-geoip-redirect' ),
-				);
 			}
 		}
 	}

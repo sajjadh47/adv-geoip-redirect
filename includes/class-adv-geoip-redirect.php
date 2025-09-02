@@ -618,10 +618,10 @@ class Adv_Geoip_Redirect {
 	 * This static function appends debug log messages to the debug.log file if debugging is enabled
 	 * in the plugin settings.
 	 *
-	 * @since    2.0.0
+	 * @since     2.0.0
 	 * @static
-	 * @access   public
-	 * @param    string $debug_logs The debug log message to write.
+	 * @access    public
+	 * @param     string $debug_logs The debug log message to write.
 	 */
 	public static function write_down_debug_log( $debug_logs = '' ) {
 		// Check if settings are valid and debugging is enabled.
@@ -633,6 +633,20 @@ class Adv_Geoip_Redirect {
 				file_put_contents( ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'debug.log', 'Debug Log : ' . $debug_logs . "\n", FILE_APPEND );
 			}
 		}
+	}
+
+	/**
+	 * Clears debug logs.
+	 *
+	 * This static function clears the debug.log file.
+	 *
+	 * @since     2.0.0
+	 * @static
+	 * @access    public
+	 */
+	public static function clear_debug_log() {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		file_put_contents( ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'debug.log', '' );
 	}
 
 	/**

@@ -92,7 +92,7 @@ try {
 		<h3 class="redirect_rules_heading" <?php echo ! empty( Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ) ) ? 'style="display: block;"' : 'style="display: none;"'; ?>>
 			<?php esc_html_e( 'Redirect Rules', 'adv-geoip-redirect' ); ?>
 		</h3>
-		
+
 		<div id="geoipr_rules_group"></div>
 		<div class="geoipr_action_container">
 			<button type="button" class="button button-primary" id="geoipr_submit_btn"><?php esc_html_e( 'Save Changes', 'adv-geoip-redirect' ); ?></button>
@@ -106,7 +106,13 @@ try {
 		<div class="postbox">
 			<h3><span><?php esc_html_e( 'Debug Log Viewer', 'adv-geoip-redirect' ); ?></span></h3>
 			<div class="inside">
-				<textarea class="large-text code" readonly rows="5"><?php echo esc_textarea( Adv_Geoip_Redirect::read_debug_log() ); ?></textarea>
+				<textarea id="geoipr_settings_debug_log" name="geoipr_settings_debug_log" class="large-text code" readonly rows="5"><?php echo esc_textarea( Adv_Geoip_Redirect::read_debug_log() ); ?></textarea>
+				<form action="" method="post" id="geoipr_settings_debug_log_clear_form" enctype="multipart/form-data">
+					<p>
+						<?php wp_nonce_field( 'geoipr_settings_debug_log_clear_form', '_wpnonce_geoipr_settings_debug_log_clear_form' ); ?>
+						<?php submit_button( __( 'Clear Debug Log', 'adv-geoip-redirect' ), 'secondary', 'geoipr_debug_log_clear_action', false ); ?>
+					</p>
+				</form>
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
 		<div class="postbox">

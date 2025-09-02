@@ -54,6 +54,12 @@ jQuery( document ).ready( function( $ )
 		return confirm( AdvGeoipRedirect.confirnResetMsg );
 	} );
 
+	// clear debug log
+	$( document ).on( 'submit', '#geoipr_settings_debug_log_clear_form', function( event )
+	{
+		return confirm( AdvGeoipRedirect.confirnDebugLogClearMsg );
+	} );
+
 	// submit the form
 	$( '#geoipr_submit_btn' ).click( function( event )
 	{

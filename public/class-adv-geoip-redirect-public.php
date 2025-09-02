@@ -128,7 +128,7 @@ class Adv_Geoip_Redirect_Public {
 	 */
 	public function template_redirect() {
 		// if loading admin side don't run redirection logic.
-		if ( is_admin() || defined( 'DOING_AJAX' ) || defined( 'DOING_CRON' ) ) {
+		if ( is_admin() || defined( 'DOING_AJAX' ) || defined( 'DOING_CRON' ) || defined( 'REST_REQUEST' ) ) {
 			return;
 		}
 

@@ -162,3 +162,7 @@ div#geoipr_rules_group button.btn.dropdown-toggle {
 .geoipr_ip_info {
 	border-radius: 4px;
 }
+
+#geoipr_settings_debug_log_clear_form {
+	margin-top: 15px;
+}
