@@ -10,7 +10,7 @@ Redirect Visitors Based on their Geolocation Country!
 
 ## Description
 
-Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-08-07).
+Redirect your visitors according to their geographical (country) location. Using the Maxmind GeoIP (Lite) Database (DB Last Updated : 2025-09-02).
 
 ### Features:
 
@@ -70,6 +70,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 ![Import & Export Section](https://ps.w.org/adv-geoip-redirect/assets/screenshot-3.png)
 
 ## Changelog
+
+### 2.0.4
+- Geo Location Db updated to the last version.
 
 ### 2.0.3
 - Geo Location Db updated to the last version. And Added a new column in the backend where you can see your IP information now
