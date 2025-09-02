@@ -92,7 +92,6 @@ class Adv_Geoip_Redirect_Admin {
 				$this->plugin_name,
 				'AdvGeoipRedirect',
 				array(
-					'ajaxurl'          => admin_url( 'admin-ajax.php' ),
 					'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
 					'btnSavingText'            => __( 'Saving... Please Wait', 'adv-geoip-redirect' ),
 					'confirnDeleteMsg'         => __( 'Do You Really Want To Delete This Redirect Rule?', 'adv-geoip-redirect' ),
