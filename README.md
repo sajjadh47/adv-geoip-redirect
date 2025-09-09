@@ -88,8 +88,6 @@ Get access to all of these amazing features with our [Premium Plans](https://che
 - ezCache
 - A2 Optimized WP
 
-If any other cache plugin you are using not listed here, please do contact our support and we will gladly add it in out to-do list.
-
 ## Installation
 
 To add a WordPress Plugin using the built-in plugin installer:
