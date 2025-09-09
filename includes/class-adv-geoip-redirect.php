@@ -190,7 +190,8 @@ class Adv_Geoip_Redirect {
 		$this->loader->add_filter( 'admin_notices', $plugin_admin, 'admin_notices' );
 		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'admin_footer_text' );
 
-		$this->loader->add_filter( 'wp_ajax_geoipr_form_submit', $plugin_admin, 'capture_form_submit' );
+		$this->loader->add_action( 'wp_ajax_geoipr_form_submit', $plugin_admin, 'capture_form_submit' );
+		$this->loader->add_action( 'wp_ajax_adv_geoip_dismiss_upgrade_notice', $plugin_admin, 'dismiss_upgrade_notice' );
 	}
 
 	/**
@@ -291,7 +292,21 @@ class Adv_Geoip_Redirect {
 	 */
 	public static function reset_plugin_settings() {
 		// Update the plugin option with the default settings.
-		update_option( self::$option_name, self::$default_settings );
+		$updated = update_option( self::$option_name, self::$default_settings );
+
+		/**
+		 * Fires after the plugin options have been updated.
+		 *
+		 * This action allows developers to run custom logic whenever the plugin’s
+		 * settings are saved via `update_option()`.
+		 *
+		 * @since    2.0.5
+		 *
+		 * @param    string $option_name The name of the option being updated.
+		 * @param    array  $options     The sanitized options array that was saved.
+		 * @param    bool   $updated     Whether the option value has changed.
+		 */
+		do_action( 'adv_geoip_redirect_settings_updated', self::$option_name, self::$default_settings, $updated );
 	}
 
 	/**
@@ -322,8 +337,33 @@ class Adv_Geoip_Redirect {
 		// options only the allowed fields and remove any extra ones.
 		$options = array_intersect_key( $options, array_flip( self::$option_fields ) );
 
+		// Sanitize recursively all submitted data.
+		$options = self::sanitize_array_recursively( $options );
+
+		$old_value = self::get_plugin_settings();
+
 		// Update the plugin option with the provided settings.
-		return update_option( self::$option_name, self::sanitize_array_recursively( $options ) );
+		$updated = update_option( self::$option_name, $options );
+
+		/**
+		 * Fires after the plugin options have been updated.
+		 *
+		 * This action allows developers to run custom logic whenever the plugin’s
+		 * settings are saved via `update_option()`.
+		 *
+		 * @since    2.0.5
+		 *
+		 * @param    string $option_name The name of the option being updated.
+		 * @param    array  $options     The sanitized options array that was saved.
+		 * @param    bool   $updated     Whether the option value has changed.
+		 */
+		do_action( 'adv_geoip_redirect_settings_updated', self::$option_name, $options, $updated );
+
+		if ( $old_value === $options ) {
+			return true;
+		}
+
+		return $updated;
 	}
 
 	/**
@@ -359,7 +399,7 @@ class Adv_Geoip_Redirect {
 			__( 'Enable Redirection', 'adv-geoip-redirect' ),
 			__( 'Enable Development Mode', 'adv-geoip-redirect' ),
 			__( 'Write Down Debug Log', 'adv-geoip-redirect' ),
-			__( 'Skip Redirect For Bot & Crawlers', 'adv-geoip-redirect' ),
+			__( 'Skip Redirect For Bots & Crawlers', 'adv-geoip-redirect' ),
 			__( 'Skip Redirect If <code>?skipredirect</code> Parameter Found', 'adv-geoip-redirect' ),
 			__( 'Only Redirect If First Time Visit (reset after 24hrs)', 'adv-geoip-redirect' ),
 			'false',
@@ -464,11 +504,11 @@ class Adv_Geoip_Redirect {
 	 */
 	public static function import_settings( $import_file ) {
 		try {
-			global $wp_filesystem;
-
-			if ( ! $wp_filesystem ) {
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/file.php';
 			}
+
+			global $wp_filesystem;
 
 			WP_Filesystem();
 
@@ -628,9 +668,34 @@ class Adv_Geoip_Redirect {
 		if ( 'true' === self::get_option( 'dubug_log', self::$option_name, 'false' ) ) {
 			// Check if debug logs are not empty.
 			if ( ! empty( $debug_logs ) ) {
-				// Append debug logs to the file.
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-				file_put_contents( ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'debug.log', 'Debug Log : ' . $debug_logs . "\n", FILE_APPEND );
+				// Load WP Filesystem.
+				if ( ! function_exists( 'WP_Filesystem' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/file.php';
+				}
+
+				global $wp_filesystem;
+
+				WP_Filesystem();
+
+				// Get uploads directory.
+				$upload_dir = wp_upload_dir();
+				$plugin_dir = trailingslashit( $upload_dir['basedir'] ) . 'adv-geoip-redirect/';
+				$log_file   = $plugin_dir . 'debug.log';
+
+				// Ensure directory exists.
+				if ( ! $wp_filesystem->is_dir( $plugin_dir ) ) {
+					$wp_filesystem->mkdir( $plugin_dir );
+				}
+
+				// Append debug log.
+				$existing_content = '';
+				if ( $wp_filesystem->exists( $log_file ) ) {
+					$existing_content = $wp_filesystem->get_contents( $log_file );
+				}
+
+				$new_content = $existing_content . $debug_logs . "\n";
+
+				$wp_filesystem->put_contents( $log_file, $new_content, FS_CHMOD_FILE );
 			}
 		}
 	}
@@ -645,8 +710,26 @@ class Adv_Geoip_Redirect {
 	 * @access    public
 	 */
 	public static function clear_debug_log() {
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-		file_put_contents( ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'debug.log', '' );
+		// Load WP Filesystem.
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		global $wp_filesystem;
+
+		WP_Filesystem();
+
+		// Get uploads directory.
+		$upload_dir = wp_upload_dir();
+		$plugin_dir = trailingslashit( $upload_dir['basedir'] ) . 'adv-geoip-redirect/';
+		$log_file   = $plugin_dir . 'debug.log';
+
+		// Ensure directory exists.
+		if ( ! $wp_filesystem->is_dir( $plugin_dir ) ) {
+			$wp_filesystem->mkdir( $plugin_dir );
+		}
+
+		$wp_filesystem->put_contents( $log_file, '', FS_CHMOD_FILE );
 	}
 
 	/**
@@ -663,21 +746,23 @@ class Adv_Geoip_Redirect {
 	public static function read_debug_log() {
 		// Check if settings are valid and debugging is enabled.
 		if ( 'true' === self::get_option( 'dubug_log', self::$option_name, 'false' ) ) {
-			// Construct the debug log file path.
-			$log_file_path = ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'debug.log';
-
-			global $wp_filesystem;
-
-			if ( ! $wp_filesystem ) {
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/file.php';
 			}
 
+			global $wp_filesystem;
+
 			WP_Filesystem();
 
+			// Get uploads directory.
+			$upload_dir = wp_upload_dir();
+			$plugin_dir = trailingslashit( $upload_dir['basedir'] ) . 'adv-geoip-redirect/';
+			$log_file   = $plugin_dir . 'debug.log';
+
 			// Check if the debug log file exists.
-			if ( $wp_filesystem->exists( $log_file_path ) ) {
+			if ( $wp_filesystem->exists( $log_file ) ) {
 				// Read and return the contents of the log file.
-				return $wp_filesystem->get_contents( $log_file_path );
+				return $wp_filesystem->get_contents( $log_file );
 			}
 		}
 

@@ -127,7 +127,7 @@
 
 select.form-control.geoipr_user_from_chk_condition {
 	max-width: 110px;
-	height: calc(2.25rem + 4px) !important;
+	height: calc( 2.25rem + 4px ) !important;
 }
 
 span.input-group-text {
@@ -165,4 +165,97 @@ div#geoipr_rules_group button.btn.dropdown-toggle {
 
 #geoipr_settings_debug_log_clear_form {
 	margin-top: 15px;
+}
+
+#toplevel_page_adv-geoip-redirect ul.wp-submenu a[href="admin.php?page=adv-geoip-redirect-upgrade"] {
+	background-color: #00a32a !important;
+	color: #fff !important;
+	font-weight: 600 !important;
+}
+
+.adv-upgrade-to-pro-container {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+
+.adv-upgrade-to-pro-container h2,
+.adv-upgrade-to-pro-container h3 {
+	font-size: 1.3rem;
+}
+
+.adv-upgrade-to-pro-container p {
+	font-size: 1em;
+}
+
+.adv-upgrade-to-pro-container ul {
+	padding-left: 0;
+}
+
+.adv-upgrade-comparison {
+	margin-bottom: 20px;
+}
+
+#adv-upgrade-notice-bar {
+	max-height: 40px;
+	position: relative;
+	margin-bottom: -3px;
+	transition: all .3s ease-out;
+	overflow: hidden;
+}
+
+#adv-upgrade-notice-bar .adv-upgrade-notice-bar-container {
+	background-color: #fcf9e8;
+	border-top: 3px solid #66bb6a;
+	color: #3a3a56;
+	text-align: center;
+	padding: 7px;
+}
+
+#adv-upgrade-notice-bar a {
+	color: #66bb6a;
+	font-weight: 700;
+}
+
+#adv-upgrade-notice-bar strong {
+	color: #008a20;
+	font-weight: 700;
+}
+
+#adv-upgrade-notice-bar .dismiss {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	padding: 5px;
+	margin-top: 4px;
+	background: 0 0;
+	color: #72777c;
+	cursor: pointer;
+}
+
+#adv-upgrade-notice-bar .dismiss:before {
+	background: 0 0;
+	color: #72777c;
+	content: "";
+	display: block;
+	font: normal 20px / 20px dashicons;
+	speak: none;
+	height: 20px;
+	text-align: center;
+	width: 20px;
+	-webkit-font-smoothing: antialiased;
+}
+
+#wpcontent {
+    padding-left: 0;
+}
+
+.wrap {
+	padding-left: 20px;
+}
+
+.adv-upgrade-cta {
+	text-align: center;
+	margin: 2em 0;
 }

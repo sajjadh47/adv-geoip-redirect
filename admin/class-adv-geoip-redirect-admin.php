@@ -48,6 +48,16 @@ class Adv_Geoip_Redirect_Admin {
 	private $notices = array();
 
 	/**
+	 * The upgrade to pro link.
+	 *
+	 * @since     2.0.5
+	 * @static
+	 * @access    private
+	 * @var       string $upgrade_link The upgrade to pro checkout link.
+	 */
+	private static $upgrade_link = 'https://checkout.freemius.com/plugin/20605/plan/34286/licenses/1/';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since     2.0.0
@@ -70,7 +80,10 @@ class Adv_Geoip_Redirect_Admin {
 		$current_screen = get_current_screen();
 
 		// check if current page is plugin settings page.
-		if ( 'toplevel_page_adv-geoip-redirect' === $current_screen->id ) {
+		if (
+			'toplevel_page_adv-geoip-redirect' === $current_screen->id ||
+			'geoip-redirect_page_adv-geoip-redirect-upgrade' === $current_screen->id
+		) {
 			wp_enqueue_style( $this->plugin_name, ADV_GEOIP_REDIRECT_PLUGIN_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
 		}
 	}
@@ -92,12 +105,12 @@ class Adv_Geoip_Redirect_Admin {
 				$this->plugin_name,
 				'AdvGeoipRedirect',
 				array(
-					'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
-					'btnSavingText'            => __( 'Saving... Please Wait', 'adv-geoip-redirect' ),
-					'confirnDeleteMsg'         => __( 'Do You Really Want To Delete This Redirect Rule?', 'adv-geoip-redirect' ),
-					'confirnResetMsg'          => __( 'Do You Really Want To Reset All Redirect Rules? Please Make a backup using the Export Tool below to restore again!', 'adv-geoip-redirect' ),
-					'confirnDebugLogClearMsg'  => __( 'Do You Really Want To Clear The Debug Log?', 'adv-geoip-redirect' ),
-					'redirectRules'            => Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ),
+					'ajaxurl'                 => admin_url( 'admin-ajax.php' ),
+					'btnSavingText'           => __( 'Saving... Please Wait', 'adv-geoip-redirect' ),
+					'confirnDeleteMsg'        => __( 'Do You Really Want To Delete This Redirect Rule?', 'adv-geoip-redirect' ),
+					'confirnResetMsg'         => __( 'Do You Really Want To Reset All Redirect Rules? Please Make a backup using the Export Tool below to restore again!', 'adv-geoip-redirect' ),
+					'confirnDebugLogClearMsg' => __( 'Do You Really Want To Clear The Debug Log?', 'adv-geoip-redirect' ),
+					'redirectRules'           => Adv_Geoip_Redirect::get_option( 'redirect_rules', Adv_Geoip_Redirect::$option_name, array() ),
 				)
 			);
 		}
@@ -132,6 +145,17 @@ class Adv_Geoip_Redirect_Admin {
 			array( $this, 'menu_page' ),
 			'dashicons-admin-site-alt3'
 		);
+
+		if ( ! class_exists( 'Adv_Geoip_Redirect_Pro' ) ) {
+			add_submenu_page(
+				'adv-geoip-redirect',
+				__( 'Upgrade To Pro', 'adv-geoip-redirect' ),
+				__( 'Upgrade To Pro', 'adv-geoip-redirect' ),
+				'manage_options',
+				'adv-geoip-redirect-upgrade',
+				array( $this, 'menu_upgrade_page' ),
+			);
+		}
 	}
 
 	/**
@@ -142,6 +166,16 @@ class Adv_Geoip_Redirect_Admin {
 	 */
 	public function menu_page() {
 		require ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'admin/views/plugin-admin-display.php';
+	}
+
+	/**
+	 * Renders the plugin menu upgrade page content.
+	 *
+	 * @since     2.0.5
+	 * @access    public
+	 */
+	public function menu_upgrade_page() {
+		require ADV_GEOIP_REDIRECT_PLUGIN_PATH . 'admin/views/plugin-admin-upgrade-display.php';
 	}
 
 	/**
@@ -166,7 +200,7 @@ class Adv_Geoip_Redirect_Admin {
 
 				$this->notices[] = array(
 					'class'   => 'notice notice-success',
-					'message' => __( 'Filters Reset Successfully', 'adv-geoip-redirect' ),
+					'message' => __( 'Settings Reset Successfully', 'adv-geoip-redirect' ),
 				);
 			}
 		}
@@ -301,7 +335,18 @@ class Adv_Geoip_Redirect_Admin {
 			return $text;
 		}
 
-		return __( "The GeoIP Redirect Plugin is using GeoLite2 db provided by MaxMind. Please visit https://www.maxmind.com for more information.\n", 'adv-geoip-redirect' );
+		$footer_credit_text = __( "The GeoIP Redirect Plugin is using GeoLite2 db provided by MaxMind. Please visit https://www.maxmind.com for more information.\n", 'adv-geoip-redirect' );
+
+		/**
+		 * Filters the footer credit text.
+		 *
+		 * This filter allows you to modify the footer credit text.
+		 *
+		 * @since     2.0.5
+		 * @param     string $footer_credit_text Default footer credit text.
+		 * @return    string $footer_credit_text Modified footer credit text.
+		 */
+		return apply_filters( 'adv_geoip_redirect_footer_credit_text', $footer_credit_text );
 	}
 
 	/**
@@ -346,5 +391,63 @@ class Adv_Geoip_Redirect_Admin {
 
 		// Send the JSON response and exit.
 		wp_send_json( $response );
+	}
+
+	/**
+	 * Displays a dismissible upgrade notice bar for the Pro version.
+	 *
+	 * This function checks if the Pro version of the plugin is active and if the
+	 * upgrade notice has not been dismissed by the user. If both conditions are met,
+	 * it renders a prominent banner at the top of the admin page. The banner
+	 * informs the user that they are using the free version and encourages them
+	 * to upgrade to the Pro version, providing a link to the upgrade page.
+	 *
+	 * The notice includes a dismiss button that, when clicked, sets a cookie to
+	 * prevent the notice from being shown again to that user.
+	 *
+	 * @since     2.0.5
+	 * @static
+	 * @access    public
+	 * @return    void
+	 */
+	public static function show_upgrade_notice_bar() {
+		if ( ! class_exists( 'Adv_Geoip_Redirect_Pro' ) && 'dismissed' !== get_user_meta( get_current_user_id(), 'adv_geoip_upgrade_dismissed', true ) ) : ?>
+			<div id="adv-upgrade-notice-bar">
+				<div class="adv-upgrade-notice-bar-container">
+					<span class="adv-upgrade-notice-bar-message">
+						<?php
+						printf(
+							/* translators: %s is the opening and closing link tag for Pro upgrade */
+							esc_html__( 'You’re using the Free version of Advanced GeoIP Redirect. To unlock more features, consider %1$sUpgrading To Pro%2$s', 'adv-geoip-redirect' ),
+							'<a href="' . esc_url( self::$upgrade_link ) . '" target="_blank" rel="noopener noreferrer">',
+							'</a>'
+						);
+						?>
+					</span>
+					<button type="button" class="dismiss" title="<?php esc_attr_e( 'Dismiss this message.', 'adv-geoip-redirect' ); ?>">
+					</button>
+				</div>
+			</div>
+			<?php
+		endif;
+	}
+
+	/**
+	 * Dismisses the upgrade notice for the current user.
+	 *
+	 * This function is an AJAX handler that updates the user's metadata to
+	 * indicate they have dismissed the upgrade notice. It uses `update_user_meta`
+	 * to store a 'dismissed' value for the 'adv_geoip_upgrade_dismissed' key
+	 * associated with the current user's ID. After updating the meta, it sends
+	 * a JSON success response back to the client, confirming the action was
+	 * successful.
+	 *
+	 * @since     2.0.5
+	 * @access    public
+	 * @return    void
+	 */
+	public function dismiss_upgrade_notice() {
+		update_user_meta( get_current_user_id(), 'adv_geoip_upgrade_dismissed', 'dismissed' );
+		wp_send_json_success();
 	}
 }

@@ -27,6 +27,8 @@ try {
 	$visitor_country = 'N/A';
 }
 
+Adv_Geoip_Redirect_Admin::show_upgrade_notice_bar();
+
 ?>
 <div class="wrap">
 	<h2>
@@ -86,6 +88,20 @@ try {
 					</div>
 				</div>
 			</div>
+
+			<?php
+				/**
+				 * Renders the admin settings list for the Advanced GeoIP Redirect plugin.
+				 *
+				 * This function is hooked to the 'adv_geoip_redirect_admin_settings_list' action. It is
+				 * responsible for displaying the main settings page in the WordPress admin area,
+				 * including a title and a description, and then calling the necessary functions
+				 * to render the actual settings fields.
+				 *
+				 * @since    2.0.5
+				 */
+				do_action( 'adv_geoip_redirect_admin_settings_list' );
+			?>
 		</div>
 
 		<!-- Here Goes Rules Set Markup -->
@@ -103,15 +119,26 @@ try {
 
 	<br>
 	<div class="metabox-holder">
+		<?php
+			/**
+			 * Executes an action hook before the metaboxes are rendered on the Advanced GeoIP Redirect settings page.
+			 *
+			 * This function provides a hook for other plugins or themes to add content, scripts, or
+			 * styles before the main settings metaboxes are displayed. This is useful for
+			 * adding custom notices, introductory text, or other elements that should
+			 * appear at the top of the settings page.
+			 *
+			 * @since    2.0.5
+			 */
+			do_action( 'adv_geoip_redirect_admin_before_metaboxes' );
+		?>
 		<div class="postbox">
 			<h3><span><?php esc_html_e( 'Debug Log Viewer', 'adv-geoip-redirect' ); ?></span></h3>
 			<div class="inside">
 				<textarea id="geoipr_settings_debug_log" name="geoipr_settings_debug_log" class="large-text code" readonly rows="5"><?php echo esc_textarea( Adv_Geoip_Redirect::read_debug_log() ); ?></textarea>
 				<form action="" method="post" id="geoipr_settings_debug_log_clear_form" enctype="multipart/form-data">
-					<p>
-						<?php wp_nonce_field( 'geoipr_settings_debug_log_clear_form', '_wpnonce_geoipr_settings_debug_log_clear_form' ); ?>
-						<?php submit_button( __( 'Clear Debug Log', 'adv-geoip-redirect' ), 'secondary', 'geoipr_debug_log_clear_action', false ); ?>
-					</p>
+					<?php wp_nonce_field( 'geoipr_settings_debug_log_clear_form', '_wpnonce_geoipr_settings_debug_log_clear_form' ); ?>
+					<?php submit_button( __( 'Clear Debug Log', 'adv-geoip-redirect' ), 'secondary', 'geoipr_debug_log_clear_action', false ); ?>
 				</form>
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
@@ -120,10 +147,8 @@ try {
 			<div class="inside">
 				<p><?php esc_html_e( 'Export the currently saved plugin settings. This allows you to easily import the configuration into another site.', 'adv-geoip-redirect' ); ?></p>
 				<form action="" method="post" id="geoipr_settings_export_form">
-					<p>
-						<?php wp_nonce_field( 'geoipr_settings_export_form', '_wpnonce_geoipr_settings_export_form' ); ?>
-						<?php submit_button( __( 'Export', 'adv-geoip-redirect' ), 'secondary', 'geoipr_export_action', false ); ?>
-					</p>
+					<?php wp_nonce_field( 'geoipr_settings_export_form', '_wpnonce_geoipr_settings_export_form' ); ?>
+					<?php submit_button( __( 'Export', 'adv-geoip-redirect' ), 'secondary', 'geoipr_export_action', false ); ?>
 				</form>
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
@@ -135,13 +160,22 @@ try {
 					<p>
 						<input type="file" name="import_file"/>
 					</p>
-					<p>
-						<?php wp_nonce_field( 'geoipr_settings_import_form', '_wpnonce_geoipr_settings_import_form' ); ?>
-						<?php submit_button( __( 'Import', 'adv-geoip-redirect' ), 'secondary', 'geoipr_import_action', false ); ?>
-					</p>
+					<?php wp_nonce_field( 'geoipr_settings_import_form', '_wpnonce_geoipr_settings_import_form' ); ?>
+					<?php submit_button( __( 'Import', 'adv-geoip-redirect' ), 'secondary', 'geoipr_import_action', false ); ?>
 				</form>
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
+		<?php
+			/**
+			 * Executes an action hook after the metaboxes are rendered on the Advanced GeoIP Redirect settings page.
+			 *
+			 * This function provides a hook for other plugins or themes to add custom content,
+			 * scripts, or styles after the main settings metaboxes have been displayed.
+			 *
+			 * @since    2.0.5
+			 */
+			do_action( 'adv_geoip_redirect_admin_after_metaboxes' );
+		?>
 	</div><!-- .metabox-holder -->
 	<script type="text/template" id="tmpl-redirect-rules-set">
 		<div class="input-group mb-3 geoipr_rules_group_container">

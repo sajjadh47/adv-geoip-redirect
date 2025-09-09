@@ -127,6 +127,23 @@ class Adv_Geoip_Redirect_Public {
 	 * @access    public
 	 */
 	public function template_redirect() {
+		/**
+		 * Filters whether the Advanced GeoIP Redirect functionality is enabled.
+		 *
+		 * Returning `false` from this filter will disable the redirect logic.
+		 * By default, the redirect is enabled (`true`).
+		 *
+		 * Example usage:
+		 *
+		 *     add_filter( 'adv_geoip_redirect_enabled', '__return_false' );
+		 *
+		 * @since    2.0.5
+		 * @param    bool $enabled Whether the GeoIP redirect should be enabled. Default true.
+		 */
+		if ( ! apply_filters( 'adv_geoip_redirect_enabled', true ) ) {
+			return;
+		}
+
 		// if loading admin side don't run redirection logic.
 		if ( is_admin() || defined( 'DOING_AJAX' ) || defined( 'DOING_CRON' ) || defined( 'REST_REQUEST' ) ) {
 			return;
@@ -153,14 +170,33 @@ class Adv_Geoip_Redirect_Public {
 
 		$this->visitor_ip = Adv_Geoip_Redirect::get_visitor_ip();
 
+		$detect = new \Detection\MobileDetect();
+
+		$current_device = 'desktop';
+
+		if ( $detect->isAndroidOS() ) {
+			$current_device = 'android';
+		} elseif ( $detect->isiOS() ) {
+			$current_device = 'iphone';
+		} elseif ( $detect->version( 'Windows Phone' ) ) {
+			$current_device = 'windowsph';
+		} elseif ( $detect->isMobile() ) {
+			$current_device = 'mobile';
+		} elseif ( $detect->isTablet() ) {
+			$current_device = 'tablet';
+		}
+
 		// visitor ip is not valid.
 		if ( empty( $this->visitor_ip ) ) {
 			$this->debug_logs = implode(
 				"\t",
 				array(
-					gmdate( 'Y-m-d H:i:s' ),
+					// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+					date( 'Y-m-d H:i:s' ),
 					'Visitor IP ' . $this->visitor_ip,
-					__( 'Redirection terminated. Invalid Visitor IP Found!', 'adv-geoip-redirect' ),
+					__( 'Redirection Terminated', 'adv-geoip-redirect' ),
+					__( 'Invalid Visitor IP Found!', 'adv-geoip-redirect' ),
+					$current_device,
 				)
 			);
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -169,9 +205,12 @@ class Adv_Geoip_Redirect_Public {
 			$this->debug_logs = implode(
 				"\t",
 				array(
-					gmdate( 'Y-m-d H:i:s' ),
+					// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+					date( 'Y-m-d H:i:s' ),
 					'Visitor IP ' . $this->visitor_ip,
-					__( 'Redirection terminated. ?skipredirect URL Parameter Found!', 'adv-geoip-redirect' ),
+					__( 'Redirection Terminated', 'adv-geoip-redirect' ),
+					__( '?skipredirect URL Parameter Found!', 'adv-geoip-redirect' ),
+					$current_device,
 				)
 			);
 		} elseif ( 'true' === Adv_Geoip_Redirect::get_option( 'skip_if_bot', Adv_Geoip_Redirect::$option_name, 'false' ) && Adv_Geoip_Redirect::is_bot() ) {
@@ -179,9 +218,12 @@ class Adv_Geoip_Redirect_Public {
 			$this->debug_logs = implode(
 				"\t",
 				array(
-					gmdate( 'Y-m-d H:i:s' ),
+					// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+					date( 'Y-m-d H:i:s' ),
 					'Visitor IP ' . $this->visitor_ip,
-					__( 'Redirection terminated. Bot/Web Crawler Detected!', 'adv-geoip-redirect' ),
+					__( 'Redirection Terminated', 'adv-geoip-redirect' ),
+					__( 'Bot/Web Crawler Detected!', 'adv-geoip-redirect' ),
+					$current_device,
 				)
 			);
 		} else {
@@ -207,15 +249,6 @@ class Adv_Geoip_Redirect_Public {
 
 					// don't continue if redirect to & visited url is same.
 					if ( $target_url === $visited_url || $target_url === $current_url ) {
-						$this->debug_logs = implode(
-							"\t",
-							array(
-								gmdate( 'Y-m-d H:i:s' ),
-								'Visitor IP ' . $this->visitor_ip,
-								__( 'Redirection terminated. Same page redirection! Aborted Redirection to avoid infinite redirect loop!', 'adv-geoip-redirect' ),
-							)
-						);
-
 						continue;
 					}
 
@@ -224,6 +257,7 @@ class Adv_Geoip_Redirect_Public {
 						$rule_set['TargetURLField'] = trailingslashit( home_url( $target_url ) );
 					}
 
+					// if url is relative add home_url().
 					if ( Adv_Geoip_Redirect::is_url_relative( $rule_set['VisitedURLField'] ) ) {
 						$rule_set['VisitedURLField'] = trailingslashit( home_url( $visited_url ) );
 					}
@@ -244,9 +278,12 @@ class Adv_Geoip_Redirect_Public {
 								$this->debug_logs = implode(
 									"\t",
 									array(
-										gmdate( 'Y-m-d H:i:s' ),
+										// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+										date( 'Y-m-d H:i:s' ),
 										'Visitor IP ' . $this->visitor_ip,
-										__( 'Redirection terminated. User Already Visited The Page!', 'adv-geoip-redirect' ),
+										__( 'Redirection Terminated', 'adv-geoip-redirect' ),
+										__( 'User Already Visited The Page!', 'adv-geoip-redirect' ),
+										$current_device,
 									)
 								);
 
@@ -298,15 +335,6 @@ class Adv_Geoip_Redirect_Public {
 
 							// don't continue if redirect to & visited url is same.
 							if ( $redirect_to === $current_url ) {
-								$this->debug_logs = implode(
-									"\t",
-									array(
-										gmdate( 'Y-m-d H:i:s' ),
-										'Visitor IP ' . $this->visitor_ip,
-										__( 'Redirection terminated. Same page redirection! Aborted Redirection to avoid infinite redirect loop!', 'adv-geoip-redirect' ),
-									)
-								);
-
 								continue;
 							}
 
@@ -318,25 +346,31 @@ class Adv_Geoip_Redirect_Public {
 								$this->debug_logs = implode(
 									"\t",
 									array(
-										gmdate( 'Y-m-d H:i:s' ),
+										// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+										date( 'Y-m-d H:i:s' ),
 										'Visitor IP ' . $this->visitor_ip,
-										__( 'Redirection succeeded! To ', 'adv-geoip-redirect' ) . $redirect_to . ' From ' . $current_url,
+										__( 'Redirection Succeeded', 'adv-geoip-redirect' ),
+										__( 'To ', 'adv-geoip-redirect' ) . $redirect_to . ' From ' . $current_url,
+										$current_device,
 									)
 								);
 
 								Adv_Geoip_Redirect::write_down_debug_log( $this->debug_logs );
 								exit();
 							}
-						} //url matching end.
-					} //country matching end.
-				} //endforeach.
+						} // url matching end.
+					} // country matching end.
+				} // endforeach.
 			} catch ( Exception $e ) {
 				$this->debug_logs = implode(
 					"\t",
 					array(
-						gmdate( 'Y-m-d H:i:s' ),
+						// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+						date( 'Y-m-d H:i:s' ),
 						'Visitor IP ' . $this->visitor_ip,
-						__( 'Redirection terminated. Unable to detect visitor country!', 'adv-geoip-redirect' ),
+						__( 'Redirection Terminated', 'adv-geoip-redirect' ),
+						__( 'Unable to detect visitor country!', 'adv-geoip-redirect' ),
+						$current_device,
 					)
 				);
 			}

@@ -97,8 +97,8 @@ jQuery( document ).ready( function( $ )
 				var $TargetURLField   = $( el ).find( 'input.geoipr_target_url' ).val();
 				var $VisitedURLField  = $( el ).find( 'input.geoipr_visited_url' ).val();
 				var $FromChkCondition = $( el ).find( 'select.geoipr_user_from_chk_condition' ).val();
-				var $PassParameter    = $( el ).find( 'input.geoipr_pass_url_parameter' ).is(':checked');
-				var $IgnoreParameter  = $( el ).find( 'input.geoipr_ignore_url_parameter' ).is(':checked');
+				var $PassParameter    = $( el ).find( 'input.geoipr_pass_url_parameter' ).is( ':checked' );
+				var $IgnoreParameter  = $( el ).find( 'input.geoipr_ignore_url_parameter' ).is( ':checked' );
 
 				data.redirect_rules.push(
 					{
@@ -110,7 +110,7 @@ jQuery( document ).ready( function( $ )
 						IgnoreParameter		: $IgnoreParameter
 					}
 				);
-			});
+			} );
 		}
 
 		// ajaxurl is always set in backend
@@ -146,4 +146,14 @@ jQuery( document ).ready( function( $ )
 	} );
 
 	$( '#geoipr_rules_group' ).sortable();
+
+	$( '#adv-upgrade-notice-bar .dismiss' ).on( 'click', function()
+	{
+		$( '#adv-upgrade-notice-bar' ).fadeOut( 200, function()
+		{
+			$( this ).remove();
+		} );
+
+		jQuery.get( ajaxurl, { action: 'adv_geoip_dismiss_upgrade_notice' } );
+	} );
 } );

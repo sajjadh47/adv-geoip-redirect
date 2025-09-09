@@ -7,6 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInitAdv_Geoip_Redirect
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\SimpleCache\\' => 16,
+            'Psr\\Cache\\' => 10,
+        ),
         'M' => 
         array (
             'MaxMind\\WebService\\' => 19,
@@ -17,6 +22,10 @@ class ComposerStaticInitAdv_Geoip_Redirect
         array (
             'GeoIp2\\' => 7,
         ),
+        'D' => 
+        array (
+            'Detection\\' => 10,
+        ),
         'C' => 
         array (
             'Composer\\CaBundle\\' => 18,
@@ -24,6 +33,14 @@ class ComposerStaticInitAdv_Geoip_Redirect
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
         'MaxMind\\WebService\\' => 
         array (
             0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/WebService',
@@ -39,6 +56,10 @@ class ComposerStaticInitAdv_Geoip_Redirect
         'GeoIp2\\' => 
         array (
             0 => __DIR__ . '/..' . '/geoip2/geoip2/src',
+        ),
+        'Detection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
         ),
         'Composer\\CaBundle\\' => 
         array (
