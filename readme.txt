@@ -58,7 +58,7 @@ Using the MaxMind GeoIP2 Database, the plugin accurately detects visitor locatio
 - ✅ Developer-friendly hooks and filters for customization.
 - ✅ Priority Pro support and regular updates.
 
-Get access to all of these amazing features with our [Premium Plans](https://checkout.freemius.com/plugin/20605/plan/34286/licenses/1/).
+Get access to all of these amazing features with our [Basic Plans](https://checkout.freemius.com/plugin/20605/plan/34286/licenses/1/) [Professional Plans](https://checkout.freemius.com/plugin/20605/plan/34326/licenses/10/) [Business Plans](https://checkout.freemius.com/plugin/20605/plan/34327/licenses/unlimited/).
 
 = Supported Cache Plugins in Pro Version: =
 - WP Rocket
