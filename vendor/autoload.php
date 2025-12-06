@@ -22,4 +22,4 @@ if (PHP_VERSION_ID < 50600) {
 
 require_once __DIR__ . '/composer/autoload_real.php';
 
-return ComposerAutoloaderInitAdv_Geoip_Redirect::getLoader();
+return ComposerAutoloaderInitAdvGeoipRedirect206::getLoader();

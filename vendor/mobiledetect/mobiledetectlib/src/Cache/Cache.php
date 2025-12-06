@@ -1,104 +1,188 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Detection\Cache;
 
-use DateTime;
 use Psr\SimpleCache\CacheInterface;
+use DateInterval;
+use DateTime;
+
+use function is_int;
+use function time;
 
 /**
- * Generic naive implementation of a Simple Cache system using an associative array.
- * The cache items are PSR-6 compatible.
+ * In-memory cache implementation of PSR-16
+ * @See https://www.php-fig.org/psr/psr-16/
  */
 class Cache implements CacheInterface
 {
-    /**
-     * @var array|array{cache_key:string, cache_value:CacheItem} $cache_db
-     */
-    protected array $cache_db = [];
-
-    public function count(): int
-    {
-        return count($this->cache_db);
-    }
+    protected array $cache = [];
 
     /**
-     * @return array{string}
+     * @inheritdoc
+     * @throws CacheInvalidArgumentException
      */
-    public function getKeys(): array
+    public function get(string $key, mixed $default = null): mixed
     {
-        return array_keys($this->cache_db);
-    }
+        $this->checkKey($key);
 
-    /**
-     * @throws CacheException
-     */
-    public function get(string $key, mixed $default = null): CacheItem|null
-    {
-        if (empty($key)) {
-            throw new CacheException('Invalid cache key');
+        if (isset($this->cache[$key])) {
+            if ($this->cache[$key]['ttl'] === null || $this->cache[$key]['ttl'] > time()) {
+                return $this->cache[$key]['content'];
+            }
+
+            // @Note: this is an interpretation of "Definitions" -> "Expiration"
+            // Implementing Libraries MAY expire an item before its requested Expiration Time, but MUST treat an item as expired once its Expiration Time is reached.
+            $this->deleteSingle($key);
         }
 
-        return $this->cache_db[$key] ?? null;
+        return $default;
     }
 
     /**
-     * @throws CacheException
+     * @inheritdoc
+     * @throws CacheInvalidArgumentException
      */
-    public function set(string $key, mixed $value, \DateInterval|int|null $ttl = null): bool
+    public function set(string $key, mixed $value, int|DateInterval|null $ttl = null): bool
     {
-        if (empty($key)) {
-            throw new CacheException('Invalid cache key');
+        $this->checkKey($key);
+
+        // From https://www.php-fig.org/psr/psr-16/ "Definitions" -> "Expiration"
+        // If a negative or zero TTL is provided, the item MUST be deleted from the cache if it exists, as it is expired already.
+        if (is_int($ttl) && $ttl <= 0) {
+            $this->deleteSingle($key);
+            return false;
         }
-        $item = new CacheItem($key, $value);
-        $item->expiresAfter($ttl);
-        $this->cache_db[$key] = $item;
+
+        $ttl = $this->getTTL($ttl);
+
+        if ($ttl !== null) {
+            $ttl = (time() + $ttl);
+        }
+
+        $this->cache[$key] = ['ttl' => $ttl, 'content' => $value];
+
         return true;
     }
 
+    /** @inheritdoc */
     public function delete(string $key): bool
     {
-        unset($this->cache_db[$key]);
-        return true;
-    }
+        $this->checkKey($key);
+        $this->deleteSingle($key);
 
-    public function clear(): bool
-    {
-        $this->cache_db = [];
         return true;
-    }
-
-    public function getMultiple(iterable $keys, mixed $default = null): iterable
-    {
-        return array_reduce((array)$keys, function ($result, $key) {
-            $result[$key] = $this->get($key);
-            return $result;
-        }, []);
     }
 
     /**
-     * @param array<array{key:string, value:string}> $values
-     * @param \DateInterval|int|null $ttl
-     * @return bool
-     * @throws CacheException
+     * Deletes the cache item from memory.
+     *
+     * @param string $key Cache key
+     * @return void
      */
-    public function setMultiple(iterable $values, \DateInterval|int|null $ttl = null): bool
+    private function deleteSingle(string $key): void
     {
-        foreach ($values as $key => $value) {
-            $this->set($key, $value, $ttl);
-        }
+        unset($this->cache[$key]);
+    }
+
+    /** @inheritdoc */
+    public function clear(): bool
+    {
+        $this->cache = [];
+
         return true;
     }
 
+    /** @inheritdoc */
+    public function has(string $key): bool
+    {
+        $key = $this->checkKey($key);
+
+        return isset($this->cache[$key]);
+    }
+
+    /** @inheritdoc */
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    {
+        $data = [];
+
+        foreach ($keys as $key) {
+            $data[$key] = $this->get($key, $default);
+        }
+
+        return $data;
+    }
+
+    /** @inheritdoc */
+    public function setMultiple(iterable $values, int|DateInterval|null $ttl = null): bool
+    {
+        $return = [];
+
+        foreach ($values as $key => $value) {
+            $return[] = $this->set($key, $value, $ttl);
+        }
+
+        return $this->checkReturn($return);
+    }
+
+    /** @inheritdoc */
     public function deleteMultiple(iterable $keys): bool
     {
         foreach ($keys as $key) {
-            unset($this->cache_db[$key]);
+            $this->delete($key);
         }
+
         return true;
     }
 
-    public function has(string $key): bool
+    /**
+     * @throws CacheInvalidArgumentException
+     */
+    protected function checkKey(string $key): string
     {
-        return isset($this->cache_db[$key]);
+
+        if ($key === '' || !preg_match('/^[A-Za-z0-9_.]{1,64}$/', $key)) {
+            throw new CacheInvalidArgumentException("Invalid key: '$key'. Must be alphanumeric, can contain _ and . and can be maximum of 64 chars.");
+        }
+
+        return $key;
+    }
+
+    /**  */
+    protected function getTTL(DateInterval|int|null $ttl): ?int
+    {
+
+        if ($ttl instanceof DateInterval) {
+            return (new DateTime())->add($ttl)->getTimeStamp() - time();
+        }
+
+        // We treat 0 as a valid value.
+        if (is_int($ttl)) {
+            return $ttl;
+        }
+
+        return null;
+    }
+
+    /**
+     * Checks if at least one of the values is FALSE, then returns FALSE.
+     *
+     * @param bool[] $booleans
+     */
+    protected function checkReturn(array $booleans): bool
+    {
+        return !in_array(false, $booleans, true);
+    }
+
+    /**
+     * Get all cache keys.
+     *
+     * @internal Needed for testing purposes.
+     * @return string[]
+     */
+    public function getKeys(): array
+    {
+        return array_keys($this->cache);
     }
 }

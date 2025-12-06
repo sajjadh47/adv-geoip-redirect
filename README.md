@@ -129,6 +129,15 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.0.8 
+- Added skipping redirection for any url first time visit.
+
+### 2.0.7 
+- Geo Location Db updated to the last version.
+
+### 2.0.6 
+- Fixed fatal error because of cache library.
+
 ### 2.0.5
 - Fixed few bugs. Recommended to update to latest version.
 

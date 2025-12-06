@@ -85,6 +85,7 @@ class Adv_Geoip_Redirect {
 		'skip_if_bot',
 		'skip_if_skipredirect_provided',
 		'redirect_for_first_time_visit_only',
+		'redirect_for_first_time_visit_only_global',
 		'redirection_type',
 		'redirect_rules',
 	);
@@ -98,6 +99,7 @@ class Adv_Geoip_Redirect {
 	 * @var       array
 	 */
 	public static $default_option_values = array(
+		'false',
 		'false',
 		'false',
 		'false',
@@ -401,7 +403,8 @@ class Adv_Geoip_Redirect {
 			__( 'Write Down Debug Log', 'adv-geoip-redirect' ),
 			__( 'Skip Redirect For Bots & Crawlers', 'adv-geoip-redirect' ),
 			__( 'Skip Redirect If <code>?skipredirect</code> Parameter Found', 'adv-geoip-redirect' ),
-			__( 'Only Redirect If First Time Visit (reset after 24hrs)', 'adv-geoip-redirect' ),
+			__( 'Only Redirect If First Time Visit, Per URL (reset after 24hrs)', 'adv-geoip-redirect' ),
+			__( 'Only Redirect If First Time Visit, Global (reset after 24hrs)', 'adv-geoip-redirect' ),
 			'false',
 			'false',
 		);

@@ -168,6 +168,13 @@ class Adv_Geoip_Redirect_Public {
 			}
 		}
 
+		// check if redirect first visit global only enabled.
+		if ( 'true' === Adv_Geoip_Redirect::get_option( 'redirect_for_first_time_visit_only_global', Adv_Geoip_Redirect::$option_name, 'false' ) ) {
+			if ( isset( $_COOKIE[ sha1( 'geoipr_visited_already_once_global' ) ] ) ) {
+				return;
+			}
+		}
+
 		$this->visitor_ip = Adv_Geoip_Redirect::get_visitor_ip();
 
 		$detect = new \Detection\MobileDetect();
@@ -240,7 +247,23 @@ class Adv_Geoip_Redirect_Public {
 				// go over through all rules.
 				foreach ( $redirect_rules as $rule_set ) {
 					// convert object to array.
-					$rule_set    = (array) $rule_set;
+					$rule_set = (array) $rule_set;
+
+					// Check if country field is empty.
+					if ( empty( $rule_set['countryField'] ) ) {
+						continue;
+					}
+
+					// Check if visited url field is empty.
+					if ( empty( $rule_set['VisitedURLField'] ) ) {
+						continue;
+					}
+
+					// Check if target url field is empty.
+					if ( empty( $rule_set['TargetURLField'] ) ) {
+						continue;
+					}
+
 					$target_url  = esc_url( trailingslashit( $rule_set['TargetURLField'] ) );
 					$visited_url = esc_url( trailingslashit( $rule_set['VisitedURLField'] ) );
 
@@ -249,6 +272,11 @@ class Adv_Geoip_Redirect_Public {
 
 					// don't continue if redirect to & visited url is same.
 					if ( $target_url === $visited_url || $target_url === $current_url ) {
+						continue;
+					}
+
+					// don't continue if it's a WooCommerce ajax or Job Manager ajax request.
+					if ( preg_match( '/jm-ajax/', $current_url ) || preg_match( '/wp-content/', $current_url ) || preg_match( '/wc-ajax/', $current_url ) ) {
 						continue;
 					}
 
@@ -291,22 +319,8 @@ class Adv_Geoip_Redirect_Public {
 							}
 						}
 
-						$visited_url_field = str_replace( array( '?' ), array( '\?' ), $visited_url );
-
-						// check if VisitedURLField has any url parameter.
-						$url_params = explode( '?', $visited_url );
-
-						// if it has Params remove them to go forward.
-						if ( count( $url_params ) > 1 ) {
-							$param                   = $url_params[1];
-							$visited_url_field       = $url_params[0] . '[\?|&].*' . $param;
-							$_SERVER['QUERY_STRING'] = isset( $_SERVER['QUERY_STRING'] ) ? preg_replace( "#$param&?#i", '', sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ) ) : '';
-						}
-
-						// don't continue if it's a WooCommerce ajax or Job Manager ajax request.
-						if ( preg_match( '/jm-ajax/', $current_url ) || preg_match( '/wp-content/', $current_url ) || preg_match( '/wc-ajax/', $current_url ) ) {
-							continue;
-						}
+						// Remove trailing slash consistency.
+						$visited_url_field = rtrim( $visited_url, '/' ) . '/?';
 
 						// now check if user is visiting the set url.
 						if ( preg_match( "#^$visited_url_field$#i", $current_url, $matches ) ) {
@@ -314,6 +328,11 @@ class Adv_Geoip_Redirect_Public {
 							array_shift( $matches );
 
 							$redirect_to = $target_url;
+
+							// Prevent infinite redirects: if current URL already matches target URL.
+							if ( preg_match( "#^$redirect_to$#i", $current_url, $redirect_to_matches ) ) {
+								continue;
+							}
 
 							if ( strpos( $redirect_to, '(.*)' ) !== false && count( $matches ) ) {
 								$regex_count = 0;
@@ -339,6 +358,7 @@ class Adv_Geoip_Redirect_Public {
 							}
 
 							setcookie( sha1( $current_url ), time(), strtotime( '+24 hours' ) );
+							setcookie( sha1( 'geoipr_visited_already_once_global' ), time(), strtotime( '+24 hours' ) );
 
 							// if everything is fine then redirect user to destined url.
 							// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect

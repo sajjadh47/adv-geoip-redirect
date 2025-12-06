@@ -4,13 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitAdv_Geoip_Redirect
+class ComposerStaticInitAdvGeoipRedirect206
 {
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
-            'Psr\\Cache\\' => 10,
         ),
         'M' => 
         array (
@@ -36,10 +35,6 @@ class ComposerStaticInitAdv_Geoip_Redirect
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
-        ),
-        'Psr\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'MaxMind\\WebService\\' => 
         array (
@@ -74,9 +69,9 @@ class ComposerStaticInitAdv_Geoip_Redirect
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitAdv_Geoip_Redirect::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitAdv_Geoip_Redirect::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitAdv_Geoip_Redirect::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitAdvGeoipRedirect206::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitAdvGeoipRedirect206::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitAdvGeoipRedirect206::$classMap;
 
         }, null, ClassLoader::class);
     }

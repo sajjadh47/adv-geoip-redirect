@@ -1,9 +1,9 @@
 {
 	"require": {
 		"geoip2/geoip2": "^3.2.0",
-		"mobiledetect/mobiledetectlib": "^4.8"
+		"mobiledetect/mobiledetectlib": "^4.8.x-dev"
 	},
 	"config": {
-		"autoloader-suffix": "Adv_Geoip_Redirect"
+		"autoloader-suffix": "AdvGeoipRedirect206"
 	}
 }

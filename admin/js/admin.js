@@ -74,16 +74,17 @@ jQuery( document ).ready( function( $ )
 
 		var data =
 		{
-			action 								: 'geoipr_form_submit',
-			redirect_switch 					: $( '#redirect_switch' ).is( ':checked' ),
-			dev_mode 							: $( '#dev_mode' ).is( ':checked' ),
-			dubug_log 							: $( '#dubug_log' ).is( ':checked' ),
-			skip_if_bot 						: $( '#skip_if_bot' ).is( ':checked' ),
-			skip_if_skipredirect_provided 		: $( '#skip_if_skipredirect_provided' ).is( ':checked' ),
-			redirect_for_first_time_visit_only 	: $( '#redirect_for_first_time_visit_only' ).is( ':checked' ),
-			redirection_type 					: $( '#redirection_type' ).val(),
-			_wpnonce_geoipr_settings_form 		: $( '#_wpnonce_geoipr_settings_form' ).val(),
-			redirect_rules 						: []
+			action 										: 'geoipr_form_submit',
+			redirect_switch 							: $( '#redirect_switch' ).is( ':checked' ),
+			dev_mode 									: $( '#dev_mode' ).is( ':checked' ),
+			dubug_log 									: $( '#dubug_log' ).is( ':checked' ),
+			skip_if_bot 								: $( '#skip_if_bot' ).is( ':checked' ),
+			skip_if_skipredirect_provided 				: $( '#skip_if_skipredirect_provided' ).is( ':checked' ),
+			redirect_for_first_time_visit_only 			: $( '#redirect_for_first_time_visit_only' ).is( ':checked' ),
+			redirect_for_first_time_visit_only_global 	: $( '#redirect_for_first_time_visit_only_global' ).is( ':checked' ),
+			redirection_type 							: $( '#redirection_type' ).val(),
+			_wpnonce_geoipr_settings_form 				: $( '#_wpnonce_geoipr_settings_form' ).val(),
+			redirect_rules 								: []
 		};
 
 		var $rulesList = $( '.geoipr_rules_group_container' );
