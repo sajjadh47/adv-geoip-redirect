@@ -129,6 +129,13 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.1.0
+- Now it supports proxy server multiple IP detection.
+
+### 2.0.9
+- Geo Location Db updated to the last version.
+- Compatibility checkup for latest wp version 6.9
+
 ### 2.0.8 
 - Added skipping redirection for any url first time visit.
 
