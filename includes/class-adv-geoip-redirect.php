@@ -131,7 +131,7 @@ class Adv_Geoip_Redirect {
 		 * @param    array $option_fields Array of option field keys
 		 * @return   array
 		 */
-		$option_fields = apply_filters( 'adv_geoip_redirect_option_fields', self::$option_fields );
+		self::$option_fields = apply_filters( 'adv_geoip_redirect_option_fields', self::$option_fields );
 
 		/**
 		 * Filter the default option values.
