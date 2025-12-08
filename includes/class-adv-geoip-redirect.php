@@ -124,6 +124,24 @@ class Adv_Geoip_Redirect {
 		$this->version     = defined( 'ADV_GEOIP_REDIRECT_PLUGIN_VERSION' ) ? ADV_GEOIP_REDIRECT_PLUGIN_VERSION : '1.0.0';
 		$this->plugin_name = 'adv-geoip-redirect';
 
+		/**
+		 * Filter the option fields.
+		 *
+		 * @since    2.1.0
+		 * @param    array $option_fields Array of option field keys
+		 * @return   array
+		 */
+		$option_fields = apply_filters( 'adv_geoip_redirect_option_fields', self::$option_fields );
+
+		/**
+		 * Filter the default option values.
+		 *
+		 * @since    2.1.0
+		 * @param    array $default_option_values Array of default option values
+		 * @return   array
+		 */
+		self::$default_option_values = apply_filters( 'adv_geoip_redirect_default_option_values', self::$default_option_values );
+
 		self::$default_settings = array_combine( self::$option_fields, self::$default_option_values );
 
 		$this->load_dependencies();
