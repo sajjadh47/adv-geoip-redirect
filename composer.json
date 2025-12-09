@@ -4,6 +4,6 @@
 		"mobiledetect/mobiledetectlib": "^4.8.x-dev"
 	},
 	"config": {
-		"autoloader-suffix": "AdvGeoipRedirect206"
+		"autoloader-suffix": "AdvGeoipRedirect211"
 	}
 }

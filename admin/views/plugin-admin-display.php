@@ -50,13 +50,18 @@ Adv_Geoip_Redirect_Admin::show_upgrade_notice_bar();
 							<?php echo wp_kses_post( $label ); ?>
 						</div>
 						<div class="col-sm-9">
-							<div class="form-check">
+							<div class="form-check <?php echo 'dev_mode' === $chk_id ? 'align-items-center d-flex gap-2' : ''; ?>">
 								<div class="geoipr_chk-slider">
 									<input type="checkbox" class="geoipr_chk-slider-checkbox" id="<?php echo esc_attr( $chk_id ); ?>" <?php checked( Adv_Geoip_Redirect::get_option( $chk_id, Adv_Geoip_Redirect::$option_name, 'false' ), 'true' ); ?>>
 									<label class="geoipr_chk-slider-label" for="<?php echo esc_attr( $chk_id ); ?>">
 										<span class="geoipr_chk-slider-inner"></span><span class="geoipr_chk-slider-circle"></span>
 									</label>
 								</div>
+								<?php if ( 'dev_mode' === $chk_id ) : ?>
+									<span style="vertical-align: middle;" class="wp-admin-tooltip" title="<?php esc_attr_e( 'If enabled, the plugin will only redirect visitors who are currently logged in as Administrator. All users and non-logged-in visitors will bypass the rules.', 'adv-geoip-redirect' ); ?>" aria-label="<?php esc_attr_e( 'If enabled, the plugin will only redirect visitors who are currently logged in as Administrator. All users and non-logged-in visitors will bypass the rules.', 'adv-geoip-redirect' ); ?>">
+									<span class="dashicons dashicons-editor-help"></span>
+								</span>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>

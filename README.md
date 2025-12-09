@@ -129,6 +129,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.1.1
+- Added a new feature where you can disable redirections for logged-in admins.
+
 ### 2.1.0
 - Now it supports proxy server multiple IP detection.
 

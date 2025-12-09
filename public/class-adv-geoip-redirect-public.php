@@ -168,6 +168,13 @@ class Adv_Geoip_Redirect_Public {
 			}
 		}
 
+		// if disable redirection for admins mode enabled then only redirect logged in admin users.
+		if ( 'true' === Adv_Geoip_Redirect::get_option( 'disable_for_admins', Adv_Geoip_Redirect::$option_name, 'false' ) ) {
+			if ( current_user_can( 'manage_options' ) ) {
+				return;
+			}
+		}
+
 		// check if redirect first visit global only enabled.
 		if ( 'true' === Adv_Geoip_Redirect::get_option( 'redirect_for_first_time_visit_only_global', Adv_Geoip_Redirect::$option_name, 'false' ) ) {
 			if ( isset( $_COOKIE[ sha1( 'geoipr_visited_already_once_global' ) ] ) ) {

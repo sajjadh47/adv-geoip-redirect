@@ -82,6 +82,7 @@ class Adv_Geoip_Redirect {
 		'redirect_switch',
 		'dev_mode',
 		'dubug_log',
+		'disable_for_admins',
 		'skip_if_bot',
 		'skip_if_skipredirect_provided',
 		'redirect_for_first_time_visit_only',
@@ -99,6 +100,7 @@ class Adv_Geoip_Redirect {
 	 * @var       array
 	 */
 	public static $default_option_values = array(
+		'false',
 		'false',
 		'false',
 		'false',
@@ -336,17 +338,17 @@ class Adv_Geoip_Redirect {
 		 * @param    array $option_fields Array of option field keys
 		 * @return   array
 		 */
-		self::$option_fields = apply_filters( 'adv_geoip_redirect_option_fields', self::$option_fields );
+		$option_fields = apply_filters( 'adv_geoip_redirect_option_fields', self::$option_fields );
 
 		// Check if all required fields exist.
-		foreach ( self::$option_fields as $field ) {
+		foreach ( $option_fields as $field ) {
 			if ( ! array_key_exists( $field, $options ) ) {
 				return false; // Return false if any required field is missing.
 			}
 		}
 
 		// options only the allowed fields and remove any extra ones.
-		$options = array_intersect_key( $options, array_flip( self::$option_fields ) );
+		$options = array_intersect_key( $options, array_flip( $option_fields ) );
 
 		// Sanitize recursively all submitted data.
 		$options = self::sanitize_array_recursively( $options );
@@ -410,6 +412,7 @@ class Adv_Geoip_Redirect {
 			__( 'Enable Redirection', 'adv-geoip-redirect' ),
 			__( 'Enable Development Mode', 'adv-geoip-redirect' ),
 			__( 'Write Down Debug Log', 'adv-geoip-redirect' ),
+			__( 'Disable Redirection For Admins', 'adv-geoip-redirect' ),
 			__( 'Skip Redirect For Bots & Crawlers', 'adv-geoip-redirect' ),
 			__( 'Skip Redirect If <code>?skipredirect</code> Parameter Found', 'adv-geoip-redirect' ),
 			__( 'Only Redirect If First Time Visit, Per URL (reset after 24hrs)', 'adv-geoip-redirect' ),

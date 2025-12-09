@@ -78,6 +78,7 @@ jQuery( document ).ready( function( $ )
 			redirect_switch 							: $( '#redirect_switch' ).is( ':checked' ),
 			dev_mode 									: $( '#dev_mode' ).is( ':checked' ),
 			dubug_log 									: $( '#dubug_log' ).is( ':checked' ),
+			disable_for_admins 							: $( '#disable_for_admins' ).is( ':checked' ),
 			skip_if_bot 								: $( '#skip_if_bot' ).is( ':checked' ),
 			skip_if_skipredirect_provided 				: $( '#skip_if_skipredirect_provided' ).is( ':checked' ),
 			redirect_for_first_time_visit_only 			: $( '#redirect_for_first_time_visit_only' ).is( ':checked' ),
