@@ -1,6 +1,6 @@
 # Advanced GeoIP Redirect
 
-[![Plugin Banner](https://ps.w.org/adv-geoip-redirect/assets/banner-772x250.png)](https://wordpress.org/plugins/adv-geoip-redirect/)
+[![Plugin Banner](https://ps.w.org/adv-geoip-redirect/assets/banner-1544x500.png)](https://wordpress.org/plugins/adv-geoip-redirect/)
 
 **Tags:** redirect, redirect visitor, redirect by country, wpml redirect \
 **Tested up to:** 6.9 \
