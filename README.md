@@ -129,6 +129,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.1.2
+- Geo Location Db updated to the last version.
+
 ### 2.1.1
 - Added a new feature where you can disable redirections for logged-in admins.
 
