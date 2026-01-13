@@ -87,6 +87,7 @@ Get access to all of these amazing features with our [Premium Plans](https://che
 - Seraphinite Accelerator
 - ezCache
 - A2 Optimized WP
+- FlyingPress
 
 ## Installation
 

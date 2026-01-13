@@ -91,6 +91,7 @@ Get access to all of these amazing features with our [Basic Plans](https://check
 - Seraphinite Accelerator
 - ezCache
 - A2 Optimized WP
+- FlyingPress
 
 == Installation ==
 To add a WordPress Plugin using the built-in plugin installer:
