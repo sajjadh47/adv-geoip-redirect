@@ -315,10 +315,10 @@ class Adv_Geoip_Redirect_Admin {
 	}
 
 	/**
-	 * Adds footer text referencing the MaxMind GeoLite2 database on the plugin's settings page.
+	 * Adds footer text referencing the MaxMind GeoLite database on the plugin's settings page.
 	 *
 	 * This function appends a message to the admin footer text on the GeoIP Redirect plugin's
-	 * settings page, acknowledging the use of the MaxMind GeoLite2 database and providing
+	 * settings page, acknowledging the use of the MaxMind GeoLite database and providing
 	 * a link to MaxMind's website.
 	 *
 	 * @since     2.0.0
@@ -335,7 +335,7 @@ class Adv_Geoip_Redirect_Admin {
 			return $text;
 		}
 
-		$footer_credit_text = __( "The GeoIP Redirect Plugin is using GeoLite2 db provided by MaxMind. Please visit https://www.maxmind.com for more information.\n", 'adv-geoip-redirect' );
+		$footer_credit_text = __( "The GeoIP Redirect Plugin is using GeoLite db provided by MaxMind. Please visit https://www.maxmind.com for more information.\n", 'adv-geoip-redirect' );
 
 		/**
 		 * Filters the footer credit text.

@@ -336,11 +336,6 @@ class Adv_Geoip_Redirect_Public {
 
 							$redirect_to = $target_url;
 
-							// Prevent infinite redirects: if current URL already matches target URL.
-							if ( preg_match( "#^$redirect_to$#i", $current_url, $redirect_to_matches ) ) {
-								continue;
-							}
-
 							if ( strpos( $redirect_to, '(.*)' ) !== false && count( $matches ) ) {
 								$regex_count = 0;
 								$redirect_to = preg_replace_callback(
@@ -351,6 +346,11 @@ class Adv_Geoip_Redirect_Public {
 									},
 									$redirect_to
 								);
+							}
+
+							// Prevent infinite redirects: if current URL already matches target URL.
+							if ( preg_match( "#^$redirect_to$#i", $current_url, $redirect_to_matches ) ) {
+								continue;
 							}
 
 							// if pass query enabled then add it to url.

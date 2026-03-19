@@ -130,6 +130,9 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 
 ## Changelog
 
+### 2.1.3
+- Geo Location Db updated to the last version.
+
 ### 2.1.2
 - Geo Location Db updated to the last version.
 

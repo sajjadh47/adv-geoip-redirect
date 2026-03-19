@@ -4,7 +4,7 @@ Contributors: sajjad67
 Author: Sajjad Hossain Sagor
 Tested up to: 6.9
 Requires at least: 5.6
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -121,6 +121,8 @@ Just after installing Advanced GeoIP Redirect plugin, Go to Settings -> Advanced
 3. Import & Export Section
 
 == Changelog ==
+= 2.1.3 =
+- Geo Location Db updated to the last version.
 = 2.1.2 =
 - Geo Location Db updated to the last version.
 = 2.1.1 =
